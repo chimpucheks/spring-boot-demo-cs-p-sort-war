@@ -2,8 +2,19 @@ package com.zensar.springbootdemo.entity;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.NamedNativeQuery;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 
 @Entity
+
+/*
+ * @NamedQueries(value= {@NamedQuery(name="Coupon.test1",
+ * query="from Coupon s where s.couponCode=?1 and s.couponExpireDate=?2")})
+ * 
+ * @NamedNativeQuery(name = "Student.test", query =
+ * "select *from coupon where  coupon_code=?1",resultClass=Coupon.class)
+ */
 public class Coupon {
 
 	@Id

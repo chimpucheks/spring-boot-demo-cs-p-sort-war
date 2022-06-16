@@ -5,11 +5,15 @@ import java.util.List;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import com.zensar.springbootdemo.entity.Coupon;
 import com.zensar.springbootdemo.dto.CouponDto;
 import com.zensar.springbootdemo.repository.CouponRepository;
+
+
 
 @Service
 public class CouponServiceImpl implements CouponService {	
@@ -28,12 +32,16 @@ public class CouponServiceImpl implements CouponService {
 	}
 	
 	@Override
-	public List<CouponDto> getAllCoupons() {
-		List<Coupon> listOfCoupons =  couponRepository.findAll();
+	public List<CouponDto> getAllCoupons(int pageNumber, int pageSize) {
+		//List<Coupon> listOfCoupons =  couponRepository.findAll();
 		
 		List<CouponDto> listOfCouponDto= new ArrayList<CouponDto>();
 		
-		for(Coupon coupon:listOfCoupons) {
+		Page<Coupon> findAll =couponRepository.findAll(PageRequest.of(pageNumber, pageSize));
+		
+		List<Coupon> content=findAll.getContent();
+		
+		for(Coupon coupon:content) {
 			listOfCouponDto.add(modelMapper.map(coupon,CouponDto.class));
 		}
 		return listOfCouponDto;
@@ -60,6 +68,31 @@ public class CouponServiceImpl implements CouponService {
 	public void deleteCoupon(int couponId) {
 		
 		 couponRepository.deleteById(couponId); 
+	}
+
+	
+
+	@Override
+	public List<CouponDto> getByCouponCode(String couponCode) {
+		List<CouponDto> couponDtos= new ArrayList<>();
+		List<Coupon> coupons =couponRepository.test(couponCode);
+		
+		for(Coupon coupon:coupons)
+			couponDtos.add(modelMapper.map(coupon,CouponDto.class));
+		return couponDtos;
+			
+		
+	}
+
+	@Override
+	public List<CouponDto> findByCouponCodeAndCouponExpireDate(String couponCode, String expdate) {
+		
+		List<CouponDto> couponDtos= new ArrayList<>();
+		List<Coupon> coupons =couponRepository.test1(couponCode,expdate);
+		
+		for(Coupon coupon:coupons)
+			couponDtos.add(modelMapper.map(coupon,CouponDto.class));
+		return couponDtos;
 	}		
 }
 
