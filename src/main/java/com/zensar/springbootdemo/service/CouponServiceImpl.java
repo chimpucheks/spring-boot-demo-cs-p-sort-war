@@ -7,6 +7,8 @@ import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 
 import com.zensar.springbootdemo.entity.Coupon;
@@ -37,7 +39,14 @@ public class CouponServiceImpl implements CouponService {
 		
 		List<CouponDto> listOfCouponDto= new ArrayList<CouponDto>();
 		
-		Page<Coupon> findAll =couponRepository.findAll(PageRequest.of(pageNumber, pageSize));
+		Page<Coupon> findAll = couponRepository
+				.findAll(PageRequest.of(0, 3, Sort.by(Direction.DESC, "couponCode")));
+
+		// Page<Coupon> findAll = couponRepository.findAll(PageRequest.of(pageNumber,
+		// pageSize,Sort.by(Direction.ASC,"couponCode")));
+
+		
+		
 		
 		List<Coupon> content=findAll.getContent();
 		
